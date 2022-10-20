@@ -9,7 +9,7 @@ void print_table(char *str_num)
         result[j]=(char*)malloc(strlen(str_num)*sizeof(char));
   for (int i = strlen(str_num) - 1; i >= 0; i++)
     {
-        int calc=((int)str_num[i]-48);
+        int calc=((int)str_num[i]-48*j);
         int carry=calc/10;
         result[j][i]=(char)(calc%10+carry*10);
     
@@ -20,7 +20,7 @@ void print_table(char *str_num)
   {
     printf("%s x %d = %s\n",str_num,i+1,result[i]);
   }
-  
+  free(result);
 }
 int main(int argc, char const *argv[])
 {
@@ -29,6 +29,6 @@ int main(int argc, char const *argv[])
   scanf("%s", str_num);
   str_num = realloc(str_num, strlen(str_num));
   print_table(str_num);
-
+  free(str_num);
   return 0;
 }
