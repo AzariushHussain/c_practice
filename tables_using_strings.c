@@ -1,30 +1,34 @@
 #include <stdio.h>
 #include <string.h>
-#include<stdlib.h>
+#include <stdlib.h>
 void print_table(char *str_num)
 {
-  char **result = (char **)malloc(10 * sizeof(char*));
-  for (int j = 1; j <=10; j++)
+  int calc, carry=0;
+  for (int i = 0; i < 9; i++)
   {
-        result[j]=(char*)malloc(strlen(str_num)*sizeof(char));
-  for (int i = strlen(str_num) - 1; i >= 0; i++)
+    char *result = (char *)malloc(1024 * sizeof(char));
+    for (int j = strlen(str_num) - 1; j >= 0; j--)
     {
-        int calc=((int)str_num[i]-48*j);
-        int carry=calc/10;
-        result[j][i]=(char)(calc%10+carry*10);
-    
+      calc = (((int)str_num[j] - 48) * (i + 1)) + carry;
+      *(result+j) = (char)(48 + calc % 10);
+      carry = calc / 10;
+    }
+    result = realloc(result, strlen(result));
+    if (carry != 0)
+    {
+      printf("%s x %d = %c%s\n", str_num, i + 1, (48 + carry), result);
+    }
+    else
+    {
+      printf("%s x %d = %s\n", str_num, i + 1, result);
+    }
+    carry=0;
   }
-  result=realloc(result,strlen(str_num));
-  }
-  for (int i = 0; i < 10; i++)
-  {
-    printf("%s x %d = %s\n",str_num,i+1,result[i]);
-  }
-  free(result);
+  printf("%s x %d = %s%c\n", str_num, 10, str_num, '0');
 }
 int main(int argc, char const *argv[])
 {
-  char *str_num;
+  char *str_num = (char *)malloc(1024 * sizeof(char));
   printf("Enter the number whose table is to be printed .\n");
   scanf("%s", str_num);
   str_num = realloc(str_num, strlen(str_num));
